@@ -26,7 +26,6 @@ for col in all_collections:
         for tov in spisok_cat:
             name_tov=tov.find('a').text.strip()
             url='https://shop.kerama-marazzi.ru'+tov.find('a').get('href')
-            category_tov[name_tov]=url
             responce=requests.get(url,headers=headers)
             soup_tov=BeautifulSoup(responce.text,'lxml')
             vse_tovar=soup_tov.find_all('div',class_="col-xl-3 col-md-4 col-sm-6 mt-3")
@@ -42,32 +41,36 @@ for col in all_collections:
                     price=price[0].text
                 b=[name,url,price]
                 spis.append(b)
+                category[name_tov]=spis
+            spis=[]
                 
-        with open(f'{name_col}.csv','a', encoding='utf-8') as file:
-            writer=csv.writer(file)
-            writer.writerow(
-                (
-                        "Имя",
-                        "Адрес",
-                        "Цена"
+              
+        category_tov[name_col]=category
+        count+=1       
+       ##with open(f'{name_col}.csv','a', encoding='utf-8') as file:
+            ##writer=csv.writer(file)
+            ##writer.writerow(
+                ##(
+                       # #"Имя",
+                        #"Адрес",
+                        #"Цена"
 
-                )
-            )    
-            #with open(f'category_{name}.json','w',encoding='utf-8') as file:
-                #json.dump(category_tov, file, indent=4, ensure_ascii=False)
+               # #)
+            #)    
+
             
                 
-        with open(f'{name_col}.csv','a', encoding='utf-8') as file:
-            writer=csv.writer(file)
-            writer.writerows(spis)
+        #with open(f'{name_col}.csv','a', encoding='utf-8') as file:
+            #writer=csv.writer(file)
+            #writer.writerows(spis)
                        
 
                 
-        category_tov={}
-        count+=1
-        print(vse_tovar)  
-        print(name)
-
+        #category_tov={}
+        
+with open(f'category_{name_col}.json','a',encoding='utf-8') as file:
+    json.dump(category_tov, file, indent=4, ensure_ascii=False)
+       
 
 #print(spisok_cat)
 #with open("category.json",'w',encoding='utf-8') as file:
